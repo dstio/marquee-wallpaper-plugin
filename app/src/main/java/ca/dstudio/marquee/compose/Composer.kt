@@ -86,11 +86,12 @@ class Composer(private val labels: Labels) {
             val c = Canvas(out)
             c.drawColor(BACKGROUND)
             c.scale(s, s)
+            val shown = shownLook(layout, look)
             when (layout) {
-                Layout.CINEMATIC -> CinematicLayout.draw(c, frame, scene, art, look, labels)
-                Layout.MINIMAL -> MinimalLayout.draw(c, frame, scene, art, look, labels)
-                Layout.POSTER_WALL -> PosterWallLayout.draw(c, frame, scene, art, look, labels)
-                Layout.CLEAN -> CleanLayout.draw(c, frame, art, look)
+                Layout.CINEMATIC -> CinematicLayout.draw(c, frame, scene, art, shown, labels)
+                Layout.MINIMAL -> MinimalLayout.draw(c, frame, scene, art, shown, labels)
+                Layout.POSTER_WALL -> PosterWallLayout.draw(c, frame, scene, art, shown, labels)
+                Layout.CLEAN -> CleanLayout.draw(c, frame, art, shown)
             }
             return out
         } finally {
@@ -103,7 +104,7 @@ class Composer(private val labels: Labels) {
          * Bumped whenever the composer's pixels change for the same inputs; it is part of every
          * picture's id, so the launcher fetches the new pictures.
          */
-        const val STYLE_VERSION = 4
+        const val STYLE_VERSION = 5
 
         const val MIN_WALL = 6
 

@@ -2,6 +2,7 @@ package ca.dstudio.marquee.ui.pages
 
 import ca.dstudio.marquee.R
 import ca.dstudio.marquee.catalog.Languages
+import ca.dstudio.marquee.compose.shownLook
 import ca.dstudio.marquee.compose.Layout
 import ca.dstudio.marquee.compose.Look
 import ca.dstudio.marquee.compose.TextPosition
@@ -39,13 +40,16 @@ class LookPage(private val host: SettingsHost) : Page() {
         ) { i -> store(MarqueeSettings.LAYOUT, Layout.entries[i].key) }
 
         if (look.layout != Layout.CLEAN) {
+            // Bottom left is Cinematic's alone; the others show what they draw (shownLook).
+            val positions = TextPosition.entries.filter { look.layout == Layout.CINEMATIC || it != TextPosition.BOTTOM_PANEL }
+            val shown = shownLook(look.layout, look).position
             rows += choice(
                 "position",
                 c.getString(R.string.row_text_position),
-                TextPosition.entries.map { Words.position(c, it) },
-                TextPosition.entries.indexOf(look.position),
-                preview = { i -> look.copy(position = TextPosition.entries[i]) },
-            ) { i -> store(MarqueeSettings.POSITION, TextPosition.entries[i].key) }
+                positions.map { Words.position(c, it) },
+                positions.indexOf(shown),
+                preview = { i -> look.copy(position = positions[i]) },
+            ) { i -> store(MarqueeSettings.POSITION, positions[i].key) }
         }
         if (look.layout == Layout.CINEMATIC) {
             rows += choice(

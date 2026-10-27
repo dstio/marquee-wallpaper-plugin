@@ -33,3 +33,11 @@ data class Look(
     /** Clean's bottom shade. */
     val bottomShade: Boolean,
 )
+
+/** Bottom left is Cinematic's alone; another layout saved with it draws at the top left. */
+fun shownLook(layout: Layout, look: Look): Look =
+    if (layout != Layout.CINEMATIC && look.position == TextPosition.BOTTOM_PANEL) {
+        look.copy(position = TextPosition.TOP_LEFT)
+    } else {
+        look
+    }

@@ -18,6 +18,7 @@ import ca.dstudio.marquee.compose.Labels
 import ca.dstudio.marquee.compose.Layout
 import ca.dstudio.marquee.compose.Look
 import ca.dstudio.marquee.compose.Scene
+import ca.dstudio.marquee.compose.shownLook
 import ca.dstudio.marquee.settings.MarqueeSettings
 import ca.dstudio.marquee.settings.Settings
 import ca.dstudio.marquee.source.ImageKind
@@ -398,7 +399,7 @@ class Generator private constructor(context: Context) {
                 continue
             }
             val layout = composer.effectiveLayout(scene, look)
-            val id = itemId(scene, layout, look, lang, w, h, scene.logo, wall.map { it.first.details.poster })
+            val id = itemId(scene, layout, shownLook(layout, look), lang, w, h, scene.logo, wall.map { it.first.details.poster })
             if (!store.has(id)) {
                 val bitmap = composer.compose(scene, look, w, h)
                 try {
@@ -429,41 +430,41 @@ class Generator private constructor(context: Context) {
         )
     }
 
-    /**
-     * The first 24 hex of SHA-1 over `media/id|layout|position|lang|WxH|options|STYLE_VERSION`, where
-     * the options are everything else the picture shows: so a changed picture gets a new id and an
-     * unchanged one keeps its own.
-     */
-    private fun itemId(
-        scene: Scene,
-        layout: Layout,
-        look: Look,
-        lang: Lang,
-        w: Int,
-        h: Int,
-        logo: File?,
-        wallRefs: List<String?>,
-    ): String {
-        val d = scene.details
-        val options = buildString {
-            append("syn=").append(look.synopsisLines)
-            append(";shade=").append(look.bottomShade)
-            append(";list=").append(scene.listLabel)
-            append(";n=").append(scene.indexInList).append('/').append(scene.listCount)
-            append(";logo=").append(logo != null)
-            append(";details=").append(DETAILS_JSON.encodeToString(TitleDetails.serializer(), d))
-            if (layout == Layout.POSTER_WALL) append(";wall=").append(wallRefs.joinToString(","))
-        }
-        val text = "${d.media}/${d.id}|${layout.key}|${look.position.key}|${lang.tag}|${w}x$h|" +
-            "${SourceCache.sha1(options)}|${Composer.STYLE_VERSION}"
-        return SourceCache.sha1(text).take(24)
-    }
-
     companion object {
         private const val TAG = "Marquee"
         const val HOUR = 3_600_000L
 
         private val DETAILS_JSON = Json { encodeDefaults = true }
+
+        /**
+         * The first 24 hex of SHA-1 over `media/id|layout|position|lang|WxH|options|STYLE_VERSION`,
+         * where the options are everything else the picture shows: so a changed picture gets a new id
+         * and an unchanged one keeps its own.
+         */
+        internal fun itemId(
+            scene: Scene,
+            layout: Layout,
+            look: Look,
+            lang: Lang,
+            w: Int,
+            h: Int,
+            logo: File?,
+            wallRefs: List<String?>,
+        ): String {
+            val d = scene.details
+            val options = buildString {
+                append("syn=").append(look.synopsisLines)
+                append(";shade=").append(look.bottomShade)
+                append(";list=").append(scene.listLabel)
+                append(";n=").append(scene.indexInList).append('/').append(scene.listCount)
+                append(";logo=").append(logo != null)
+                append(";details=").append(DETAILS_JSON.encodeToString(TitleDetails.serializer(), d))
+                if (layout == Layout.POSTER_WALL) append(";wall=").append(wallRefs.joinToString(","))
+            }
+            val text = "${d.media}/${d.id}|${layout.key}|${look.position.key}|${lang.tag}|${w}x$h|" +
+                "${SourceCache.sha1(options)}|${Composer.STYLE_VERSION}"
+            return SourceCache.sha1(text).take(24)
+        }
 
         @Volatile
         private var instance: Generator? = null

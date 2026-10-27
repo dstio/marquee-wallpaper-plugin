@@ -43,15 +43,6 @@ internal object PosterWallLayout {
 
         val d = scene.details
         val kicker = labels.kicker(scene.listLabel, scene.indexInList + 1, scene.listCount)
-        if (look.position == TextPosition.BOTTOM_PANEL) {
-            val w = InfoColumn.PANEL_INNER
-            val col = Column(w, Align.START)
-                .add(0f, InfoColumn.kicker(kicker, labels, w))
-                .add(22f, InfoColumn.logoOrTitle(art.logo, d, labels, w, 760f, 150f, 76f, 56f, 24f))
-                .add(22f, InfoColumn.facts(labels.facts(d), labels, 21f, w))
-            InfoColumn.drawPanel(c, f, col)
-            return
-        }
         val w = InfoColumn.WIDTH
         Column(w, InfoColumn.align(look.position))
             .add(0f, InfoColumn.kicker(kicker, labels, w))

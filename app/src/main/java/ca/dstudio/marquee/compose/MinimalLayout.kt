@@ -15,11 +15,6 @@ internal object MinimalLayout {
         art.backdrop?.let { Composer.drawCover(c, it, RectF(0f, 0f, f.w, f.h)) }
         val d = scene.details
         val facts = labels.facts(d) + listOfNotNull(labels.tmdbPercent(d)?.let { "${labels.tmdb} $it" })
-        if (look.position == TextPosition.BOTTOM_PANEL) {
-            Shade.top(c, f.w, f.h)
-            InfoColumn.drawPanel(c, f, InfoColumn.panelColumn(d, art.logo, labels, facts, 0))
-            return
-        }
         val right = look.position == TextPosition.TOP_RIGHT
         Shade.minimalSide(c, f.w, f.h, if (right) Shade.Edge.RIGHT else Shade.Edge.LEFT)
         Shade.bottom(c, f.w, f.h)
