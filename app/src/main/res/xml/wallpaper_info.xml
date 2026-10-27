@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Twelve hours between sets by default; the service sets the real interval on every answer. -->
+<wallpaper-provider
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:wallpaperLabel="@string/app_name"
+    app:wallpaperDescription="@string/wallpaper_description"
+    app:wallpaperSettings="ca.dstudio.marquee.ui.SettingsActivity"
+    app:wallpaperKind="items"
+    app:wallpaperTypes="image"
+    app:refreshIntervalMs="43200000"
+    app:apiVersion="2" />

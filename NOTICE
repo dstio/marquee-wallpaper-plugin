@@ -1,0 +1,11 @@
+Marquee
+Copyright 2026 DStudio
+
+This product includes the ATV Launcher Wallpaper API, developed by DStudio
+(https://github.com/dstio/wallpaper-api), under the Apache License 2.0.
+
+This product uses the TMDB API but is not endorsed or certified by TMDB.
+Streaming availability is provided by JustWatch.
+
+The Jost and Fraunces fonts are licensed under the SIL Open Font License 1.1;
+their licences are in app/src/main/assets/licences/.

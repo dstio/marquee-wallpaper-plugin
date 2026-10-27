@@ -1,0 +1,106 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
+
+// versionCode = 30000000 + the number of commits, so every commit is a higher version.
+def gitCount = providers.exec {
+    commandLine 'git', 'rev-list', '--count', 'HEAD'
+    // No repository yet (or no commits): fall back to 0 instead of failing configuration.
+    ignoreExitValue = true
+}
+def gitCommitCount = gitCount.result.get().exitValue == 0
+        ? gitCount.standardOutput.asText.get().trim().toInteger()
+        : 0
+def vcode = 30000000 + gitCommitCount
+
+// Release signing comes from keystore.properties at the project root (never committed): storeFile,
+// storePassword, keyAlias, keyPassword. Without it the release build is left unsigned.
+def keystorePropsFile = rootProject.file('keystore.properties')
+def keystoreProps = new Properties()
+if (keystorePropsFile.exists()) {
+    keystorePropsFile.withInputStream { keystoreProps.load(it) }
+}
+
+// TMDB's API read access token: local.properties `tmdb.token`, else the environment variable
+// MARQUEE_TMDB_TOKEN, else empty. It is never printed by the build.
+def localProps = new Properties()
+def localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+def tmdbToken = (localProps.getProperty('tmdb.token') ?: System.getenv('MARQUEE_TMDB_TOKEN') ?: '').trim()
+def tmdbTokenField = '"' + tmdbToken.replace('\\', '\\\\').replace('"', '\\"') + '"'
+
+android {
+    namespace 'ca.dstudio.marquee'
+    compileSdkVersion ANDROID_COMPILE_SDK_VERSION
+
+    defaultConfig {
+        applicationId 'ca.dstudio.marquee'
+        minSdkVersion ANDROID_MIN_SDK_VERSION
+        targetSdkVersion ANDROID_TARGET_SDK_VERSION
+        versionCode vcode
+        versionName "0.1.0"
+        base.archivesName = "marquee-$versionName-$versionCode"
+
+        buildConfigField 'String', 'TMDB_TOKEN', tmdbTokenField
+    }
+
+    signingConfigs {
+        if (keystorePropsFile.exists()) {
+            release {
+                storeFile file(keystoreProps['storeFile'])
+                storePassword keystoreProps['storePassword']
+                keyAlias keystoreProps['keyAlias']
+                keyPassword keystoreProps['keyPassword']
+                // v1 for Android 6.0, which predates APK Signature Scheme v2
+                v1SigningEnabled true
+                v2SigningEnabled true
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            if (keystorePropsFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/*.kotlin_module']
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+
+    // The ATV Launcher wallpaper plugin protocol, from JitPack.
+    implementation "com.github.dstio:wallpaper-api:$WALLPAPER_API_VERSION"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$SERIALIZATION_VERSION"
+    implementation "com.squareup.okhttp3:okhttp:$OKHTTP_VERSION"
+    implementation "androidx.core:core-ktx:$ANDROIDX_CORE_VERSION"
+    implementation "androidx.work:work-runtime:$WORK_VERSION"
+    implementation "androidx.recyclerview:recyclerview:$RECYCLERVIEW_VERSION"
+
+    testImplementation 'junit:junit:4.13.2'
+}

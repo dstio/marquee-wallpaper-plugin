@@ -1,0 +1,43 @@
+// Marquee - a wallpaper plugin that composes film and TV wallpapers on the device.
+buildscript {
+    ext {
+        ANDROID_MIN_SDK_VERSION     = 23
+        ANDROID_TARGET_SDK_VERSION  = 36
+        ANDROID_COMPILE_SDK_VERSION = 36
+
+        KOTLIN_VERSION              = '2.3.10'
+        WALLPAPER_API_VERSION       = '2.0.2'
+
+        SERIALIZATION_VERSION       = '1.9.0'
+        OKHTTP_VERSION              = '4.12.0'
+        ANDROIDX_CORE_VERSION       = '1.16.0'
+        WORK_VERSION                = '2.10.1'
+        RECYCLERVIEW_VERSION        = '1.3.2'
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:9.0.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$KOTLIN_VERSION"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        // wallpaper-api (github.com/dstio/wallpaper-api), built by JitPack from its tags.
+        maven {
+            url 'https://jitpack.io'
+            content { includeGroup 'com.github.dstio' }
+        }
+    }
+}
+
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
+}

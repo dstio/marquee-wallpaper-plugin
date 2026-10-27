@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Marquee</string>
+    <string name="wallpaper_description">Film and TV wallpapers from lists you pick</string>
+
+    <!-- The lists, as the wallpapers' footer and kicker name them -->
+    <string name="list_trending">Trending this week</string>
+    <string name="list_in_cinemas">In cinemas</string>
+    <string name="list_popular_films">Popular films</string>
+    <string name="list_upcoming">Upcoming</string>
+    <string name="list_top_rated_shows">Top rated shows</string>
+    <string name="list_on_the_air">On the air</string>
+
+    <!-- The facts line on a wallpaper -->
+    <string name="facts_runtime_hours_minutes">%1$d h %2$d min</string>
+    <string name="facts_runtime_hours">%1$d h</string>
+    <string name="facts_runtime_minutes">%1$d min</string>
+    <plurals name="facts_seasons">
+        <item quantity="one">%1$d season</item>
+        <item quantity="other">%1$d seasons</item>
+    </plurals>
+
+    <!-- The ratings row, the footer and the poster wall's kicker -->
+    <string name="rating_tmdb" translatable="false">TMDB</string>
+    <string name="footer_from">From</string>
+    <string name="footer_streaming_on">Streaming on</string>
+    <string name="kicker_position">%1$s · %2$d of %3$d</string>
+
+    <!-- Settings: the key hints in the panel's footer. The key names are the remote's own. -->
+    <string name="key_ok" translatable="false">OK</string>
+    <string name="key_back" translatable="false">BACK</string>
+    <string name="key_left_right" translatable="false">◄ ►</string>
+    <string name="hint_open">Open</string>
+    <string name="hint_close">Close</string>
+    <string name="hint_back">Back</string>
+    <string name="hint_switch">Select</string>
+    <string name="hint_choose">Choose</string>
+    <string name="hint_close_list">Close list</string>
+    <string name="hint_change">Change</string>
+    <string name="hint_start">Start</string>
+
+    <!-- Settings: the start page -->
+    <plurals name="start_summary">
+        <item quantity="one">%1$d wallpaper · made %2$s ago</item>
+        <item quantity="other">%1$d wallpapers · made %2$s ago</item>
+    </plurals>
+    <plurals name="age_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <string name="age_hours">%1$d h</string>
+    <plurals name="age_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="start_making_first">Making the first wallpapers…</string>
+    <string name="start_making">Making wallpapers…</string>
+    <string name="start_making_step">Making wallpapers, %1$d of %2$d…</string>
+    <string name="section_wallpapers">Wallpapers</string>
+    <string name="section_updates">Updates</string>
+    <string name="row_lists">Lists</string>
+    <string name="value_lists">TMDB %1$d</string>
+    <string name="row_filters">Filters</string>
+    <string name="row_look">Look</string>
+    <string name="row_explore">Debug</string>
+    <string name="row_explore_description">Why each title is shown or left out</string>
+    <string name="row_interval">Make new wallpapers</string>
+    <string name="interval_6">Every 6 hours</string>
+    <string name="interval_12">Every 12 hours</string>
+    <string name="interval_24">Every day</string>
+    <string name="interval_48">Every 2 days</string>
+    <string name="interval_168">Every week</string>
+    <string name="interval_hours">Every %1$d hours</string>
+    <string name="row_update_now">Update now</string>
+    <string name="update_done">Done</string>
+    <string name="update_no_connection">No connection</string>
+    <string name="update_lists_failed">Could not reach TMDB</string>
+    <string name="update_nothing_picked">No title passed the filters</string>
+    <string name="update_no_source">This build cannot reach TMDB</string>
+    <string name="update_failed">Could not make wallpapers</string>
+    <string name="row_picture_size">Picture size</string>
+    <string name="picture_size_1080" translatable="false">1080p</string>
+    <string name="picture_size_2160" translatable="false">4K</string>
+    <string name="row_about">About</string>
+
+    <!-- Settings: Lists -->
+    <string name="lists_subtitle">TMDB · no account needed</string>
+    <string name="list_trending_description">Films and shows</string>
+    <string name="lists_at_least_one">At least one list</string>
+    <string name="section_each_list">For each list</string>
+    <string name="row_titles">Titles</string>
+    <string name="stepper_value">‹ %1$d ›</string>
+    <string name="row_pick">Pick</string>
+    <string name="pick_random">At random</string>
+    <string name="pick_top">Top of the list</string>
+    <string name="row_order">Order on screen</string>
+    <string name="order_mixed">Mixed</string>
+    <string name="order_lists">List by list</string>
+
+    <!-- Settings: Filters -->
+    <string name="filters_subtitle">For every list</string>
+    <string name="row_released_within">Released within</string>
+    <string name="released_any">Any time</string>
+    <plurals name="released_years">
+        <item quantity="one">%1$d year</item>
+        <item quantity="other">%1$d years</item>
+    </plurals>
+    <string name="row_genres">Genres</string>
+    <string name="genres_all">All</string>
+    <string name="genres_all_but">All but %1$s</string>
+    <plurals name="genres_count">
+        <item quantity="one">%1$d genre</item>
+        <item quantity="other">%1$d genres</item>
+    </plurals>
+    <string name="row_hide_adult">Hide adult titles</string>
+    <string name="row_no_repeats">No repeats</string>
+    <string name="row_no_repeats_description">Skip titles shown last time</string>
+    <string name="section_your_language">Your language</string>
+    <string name="row_needs_logo">Needs a logo</string>
+    <string name="row_needs_synopsis">Needs a synopsis</string>
+    <string name="filters_none">None</string>
+    <string name="filters_no_adult">no adult</string>
+    <string name="filters_no_repeats">no repeats</string>
+    <plurals name="filters_genres_off">
+        <item quantity="one">%1$d genre off</item>
+        <item quantity="other">%1$d genres off</item>
+    </plurals>
+    <string name="filters_separator">", "</string>
+
+    <!-- Settings: Genres -->
+    <string name="genres_subtitle">Titles in a genre that is off are left out</string>
+    <string name="genre_for_films">Films</string>
+    <string name="genre_for_shows">Shows</string>
+    <string name="genre_action">Action</string>
+    <string name="genre_action_adventure">Action and adventure</string>
+    <string name="genre_adventure">Adventure</string>
+    <string name="genre_animation">Animation</string>
+    <string name="genre_comedy">Comedy</string>
+    <string name="genre_crime">Crime</string>
+    <string name="genre_documentary">Documentary</string>
+    <string name="genre_drama">Drama</string>
+    <string name="genre_family">Family</string>
+    <string name="genre_fantasy">Fantasy</string>
+    <string name="genre_history">History</string>
+    <string name="genre_horror">Horror</string>
+    <string name="genre_kids">Kids</string>
+    <string name="genre_music">Music</string>
+    <string name="genre_mystery">Mystery</string>
+    <string name="genre_news">News</string>
+    <string name="genre_reality">Reality</string>
+    <string name="genre_romance">Romance</string>
+    <string name="genre_science_fiction">Science fiction</string>
+    <string name="genre_sci_fi_fantasy">Sci-fi and fantasy</string>
+    <string name="genre_soap">Soap</string>
+    <string name="genre_talk">Talk</string>
+    <string name="genre_thriller">Thriller</string>
+    <string name="genre_tv_film">TV film</string>
+    <string name="genre_war">War</string>
+    <string name="genre_war_politics">War and politics</string>
+    <string name="genre_western">Western</string>
+
+    <!-- Settings: Look -->
+    <string name="look_subtitle">Changes show behind this panel</string>
+    <string name="row_layout">Layout</string>
+    <string name="layout_cinematic">Cinematic</string>
+    <string name="layout_minimal">Minimal</string>
+    <string name="layout_poster_wall">Poster wall</string>
+    <string name="layout_clean">Clean</string>
+    <string name="row_text_position">Text position</string>
+    <string name="position_top_left">Top left</string>
+    <string name="position_top_right">Top right</string>
+    <string name="position_bottom_left">Bottom left</string>
+    <string name="row_synopsis">Synopsis</string>
+    <string name="synopsis_3">3 lines</string>
+    <string name="synopsis_2">2 lines</string>
+    <string name="synopsis_1">1 line</string>
+    <string name="synopsis_off">Off</string>
+    <string name="row_bottom_shade">Bottom shade</string>
+    <string name="row_language">Language</string>
+    <string name="language_device">Device language</string>
+
+    <!-- Settings: Debug (the last run's report) -->
+    <string name="explore_title">Debug</string>
+    <string name="explore_subtitle">Every title each list offered, in its order, and why it became a wallpaper or not. Made %1$s ago.</string>
+    <string name="explore_empty">No wallpapers made yet.</string>
+    <string name="explore_list_failed">Could not read this list</string>
+    <string name="explore_film">Film</string>
+    <string name="explore_show">Show</string>
+    <string name="explore_line">%1$d · %2$s · #%3$d</string>
+    <string name="explore_line_no_year">%1$s · #%2$d</string>
+    <string name="verdict_shown">Shown</string>
+    <plurals name="verdict_older">
+        <item quantity="one">Older than %1$d year</item>
+        <item quantity="other">Older than %1$d years</item>
+    </plurals>
+    <string name="verdict_adult">Adult title</string>
+    <string name="verdict_genre">Genre left out</string>
+    <string name="verdict_no_logo">No logo in %1$s</string>
+    <string name="verdict_no_synopsis">No synopsis in %1$s</string>
+    <string name="verdict_no_backdrop">No textless backdrop</string>
+    <string name="verdict_repeat">Shown last time</string>
+    <string name="verdict_duplicate">Already in another list</string>
+    <!-- A random pick draws the list's titles from its first 40; the rest were not drawn. -->
+    <string name="verdict_not_drawn">Not picked this time</string>
+    <plurals name="verdict_over_count">
+        <item quantity="one">List already had %1$d title</item>
+        <item quantity="other">List already had %1$d titles</item>
+    </plurals>
+    <string name="verdict_failed">Could not load</string>
+
+    <!-- Settings: About -->
+    <string name="about_subtitle">Film and TV wallpapers, made on this device</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_tmdb_title" translatable="false">TMDB</string>
+    <string name="about_tmdb_notice">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
+    <string name="about_streaming_title">Where to stream</string>
+    <string name="about_streaming" translatable="false">JustWatch</string>
+    <string name="about_fonts_title">Fonts</string>
+    <string name="about_fonts">Jost and Fraunces, SIL Open Font License</string>
+    <string name="about_source_title">Source code</string>
+    <string name="about_source" translatable="false">github.com/dstio/marquee-wallpaper-plugin</string>
+    <string name="about_licence_title">Licence</string>
+    <!-- The licence Marquee's own code is released under. -->
+    <string name="about_licence" translatable="false">Apache License 2.0</string>
+</resources>

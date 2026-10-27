@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A placeholder mark until the icon round: a screen with a horizon. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#16181E"
+        android:pathData="M0,0h108v108h-108z" />
+    <path
+        android:fillColor="#55616B"
+        android:pathData="M22,30h64a4,4 0,0 1,4 4v40a4,4 0,0 1,-4 4h-64a4,4 0,0 1,-4 -4v-40a4,4 0,0 1,4 -4z" />
+    <path
+        android:fillColor="#B49A82"
+        android:pathData="M18,58h72v6h-72z" />
+    <path
+        android:fillColor="#232C33"
+        android:pathData="M18,64h72v10a4,4 0,0 1,-4 4h-64a4,4 0,0 1,-4 -4z" />
+    <path
+        android:fillColor="#F2EEE6"
+        android:pathData="M30,40h28v4h-28zM30,48h18v3h-18z" />
+</vector>
