@@ -5,7 +5,7 @@ import ca.dstudio.marquee.R
 import ca.dstudio.marquee.ui.panel.Item
 import ca.dstudio.marquee.ui.panel.Page
 
-/** Marquee and its version, TMDB's notice, the streaming credit, the fonts, the source and the licence. */
+/** Marquee and its version, the launcher it is made for, TMDB's notice, the streaming credit, the fonts, the source and the licence. */
 class AboutPage(private val host: SettingsHost) : Page() {
 
     private val c get() = host.context
@@ -18,6 +18,7 @@ class AboutPage(private val host: SettingsHost) : Page() {
 
     override fun items(): List<Item> = listOf(
         Item.Info("marquee", c.getString(R.string.app_name), c.getString(R.string.about_version, BuildConfig.VERSION_NAME)),
+        Item.Info("made-for", c.getString(R.string.about_made_for), c.getString(R.string.about_made_for_description)),
         // TMDB asks for its logo beside this notice; the row keeps a spot for it, to be filled from
         // TMDB's own branding files.
         Item.Info("tmdb", c.getString(R.string.about_tmdb_title), c.getString(R.string.about_tmdb_notice), logoSpot = true),

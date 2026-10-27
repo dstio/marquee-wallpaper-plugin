@@ -209,6 +209,8 @@
     <string name="verdict_failed">Could not load</string>
 
     <!-- Settings: About -->
+    <string name="about_made_for">Made for ATV Launcher</string>
+    <string name="about_made_for_description">atvlauncher.com</string>
     <string name="about_subtitle">Film and TV wallpapers, made on this device</string>
     <string name="about_version">Version %1$s</string>
     <string name="about_tmdb_title" translatable="false">TMDB</string>

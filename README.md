@@ -1,8 +1,12 @@
 # Marquee
 
-A wallpaper plugin for ATV Launcher that turns the home screen into a rotating showcase of films
-and TV shows. Marquee builds the wallpapers on the device: each title's own backdrop with its logo,
-facts, rating, a short synopsis and where it streams, from lists you choose.
+**Made for [ATV Launcher](https://atvlauncher.com)** ([Google Play](https://play.google.com/store/apps/details?id=ca.dstudio.atvlauncher.pro)).
+Marquee is a wallpaper plugin: it shows nothing on its own, and its wallpapers appear through ATV
+Launcher's Wallpaper settings.
+
+It turns the home screen into a rotating showcase of films and TV shows. Marquee builds the
+wallpapers on the device: each title's own backdrop with its logo, facts, rating, a short synopsis
+and where it streams, from lists you choose.
 
 - **Lists:** TMDB's Trending this week, In cinemas, Popular films, Upcoming, Top rated shows and
   On the air. No account needed.
