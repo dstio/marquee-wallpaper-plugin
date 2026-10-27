@@ -3,10 +3,17 @@ package ca.dstudio.marquee.debug
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import ca.dstudio.marquee.BuildConfig
+import ca.dstudio.marquee.catalog.Lang
+import ca.dstudio.marquee.compose.Layout
+import ca.dstudio.marquee.compose.Look
+import ca.dstudio.marquee.compose.TextPosition
 import ca.dstudio.marquee.settings.MarqueeSettings
+import ca.dstudio.marquee.source.ListKey
 import ca.dstudio.marquee.work.Generator
 import ca.dstudio.marquee.work.UpdateWorker
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -23,6 +30,7 @@ import java.util.concurrent.TimeoutException
  * - `generate`: a full run.
  * - `recompose`: the last set redrawn with the current look.
  * - `set`: one setting; a look setting recomposes, `interval_hours` reschedules.
+ * - `preview [--es value <n>]`: the plugin's preview picture from made-up title n, to `files/preview.png`.
  * - `dump`: the settings, the set, the last report's counts, and whether a TMDB token is built in
  *   (yes or no, never the token).
  *
@@ -63,8 +71,24 @@ class DebugReceiver : BroadcastReceiver() {
                 }
             }
             "dump" -> dump(generator)
-            else -> "unknown cmd '$cmd': generate | recompose | set | dump"
+            "preview" -> preview(context, generator, intent.getStringExtra("value")?.toIntOrNull() ?: 0)
+            else -> "unknown cmd '$cmd': generate | recompose | set | dump | preview"
         }
+    }
+
+    /**
+     * The plugin's preview picture (`wallpaperPreview`, 960 x 540): made-up title [index] of the
+     * sample Trending list in Cinematic at the top left, written losslessly to `files/preview.png`.
+     */
+    private fun preview(context: Context, generator: Generator, index: Int): String {
+        val source = generator.sourceNamed("sample") ?: return "preview: no sample source"
+        val look = Look(Layout.CINEMATIC, TextPosition.TOP_LEFT, 3, true)
+        val bitmap = generator.composeTitle(source, ListKey.TRENDING, index, Lang.of("en-US"), look, 960, 540)
+            ?: return "preview: nothing drawn"
+        val file = File(context.filesDir, "preview.png")
+        file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        bitmap.recycle()
+        return "preview: ${file.path}"
     }
 
     /** Starts a run and waits up to [WAIT_S] s for it, under the broadcast's own time limit. */

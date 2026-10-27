@@ -316,11 +316,18 @@ class Generator private constructor(context: Context) {
         }
         val s = settings.read()
         val source = source() ?: return null
-        val lang = lang(s)
         val key = s.lists.firstNotNullOfOrNull { ListKey.of(it) } ?: return null
+        return composeTitle(source, key, 0, lang(s), look, width, height)
+    }
+
+    /**
+     * Title [index] of [key]'s list in [source], drawn with [look]. Also how the plugin's own
+     * preview picture is made, from the debug build's made-up titles. Null when there is nothing to draw.
+     */
+    fun composeTitle(source: Source, key: ListKey, index: Int, lang: Lang, look: Look, width: Int, height: Int): Bitmap? {
         val list = source.list(key, lang)
         val title = try {
-            list.titles(1).firstOrNull()
+            list.titles(index + 1).getOrNull(index)
         } catch (e: IOException) {
             null
         } ?: return null
@@ -328,7 +335,7 @@ class Generator private constructor(context: Context) {
         fetchPictures(source, d) ?: return null
         val only = Placed(list.key, list.label, d)
         val scene = sceneFor(source, only, listOf(only), emptyList()) ?: return null
-        return composer.compose(scene, look, width, height)
+        return Composer(Labels(app)).compose(scene, look, width, height)
     }
 
     /** The backdrop (needed), the logo and the poster (wanted), into the source cache. Null when the backdrop failed. */
