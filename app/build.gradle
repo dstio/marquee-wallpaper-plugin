@@ -13,13 +13,21 @@ def gitCommitCount = gitCount.result.get().exitValue == 0
         : 0
 def vcode = 30000000 + gitCommitCount
 
-// Release signing comes from keystore.properties at the project root (never committed): storeFile,
-// storePassword, keyAlias, keyPassword. Without it the release build is left unsigned.
+// Release signing: the environment variables MARQUEE_KEYSTORE_FILE, MARQUEE_STORE_PASSWORD,
+// MARQUEE_KEY_ALIAS and MARQUEE_KEY_PASSWORD (the release workflow sets them from its secrets), else
+// keystore.properties at the project root (never committed): storeFile, storePassword, keyAlias,
+// keyPassword. Without either the release build is left unsigned.
 def keystorePropsFile = rootProject.file('keystore.properties')
 def keystoreProps = new Properties()
-if (keystorePropsFile.exists()) {
+if (System.getenv('MARQUEE_KEYSTORE_FILE')) {
+    keystoreProps['storeFile'] = System.getenv('MARQUEE_KEYSTORE_FILE')
+    keystoreProps['storePassword'] = System.getenv('MARQUEE_STORE_PASSWORD') ?: ''
+    keystoreProps['keyAlias'] = System.getenv('MARQUEE_KEY_ALIAS') ?: ''
+    keystoreProps['keyPassword'] = System.getenv('MARQUEE_KEY_PASSWORD') ?: ''
+} else if (keystorePropsFile.exists()) {
     keystorePropsFile.withInputStream { keystoreProps.load(it) }
 }
+def canSign = keystoreProps['storeFile'] != null
 
 // TMDB's API read access token: local.properties `tmdb.token`, else the environment variable
 // MARQUEE_TMDB_TOKEN, else empty. It is never printed by the build.
@@ -47,7 +55,7 @@ android {
     }
 
     signingConfigs {
-        if (keystorePropsFile.exists()) {
+        if (canSign) {
             release {
                 storeFile file(keystoreProps['storeFile'])
                 storePassword keystoreProps['storePassword']
@@ -62,10 +70,11 @@ android {
 
     buildTypes {
         release {
-            if (keystorePropsFile.exists()) {
+            if (canSign) {
                 signingConfig signingConfigs.release
             }
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

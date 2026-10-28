@@ -219,6 +219,8 @@
     <string name="about_streaming" translatable="false">JustWatch</string>
     <string name="about_fonts_title">Fonts</string>
     <string name="about_fonts">Jost and Fraunces, SIL Open Font License</string>
+    <string name="about_api_title">Wallpaper API</string>
+    <string name="about_api" translatable="false">ATV Launcher Wallpaper API, Copyright 2026 DStudio. Apache License 2.0</string>
     <string name="about_source_title">Source code</string>
     <string name="about_source" translatable="false">github.com/dstio/marquee-wallpaper-plugin</string>
     <string name="about_licence_title">Licence</string>

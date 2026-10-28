@@ -25,6 +25,8 @@ class AboutPage(private val host: SettingsHost) : Page() {
         // TMDB's streaming availability comes from JustWatch, which is to be credited.
         Item.Info("streaming", c.getString(R.string.about_streaming_title), c.getString(R.string.about_streaming)),
         Item.Info("fonts", c.getString(R.string.about_fonts_title), c.getString(R.string.about_fonts)),
+        // The wallpaper API's licence asks for this credit.
+        Item.Info("api", c.getString(R.string.about_api_title), c.getString(R.string.about_api)),
         Item.Info("source", c.getString(R.string.about_source_title), c.getString(R.string.about_source)),
         Item.Info("licence", c.getString(R.string.about_licence_title), c.getString(R.string.about_licence)),
     )

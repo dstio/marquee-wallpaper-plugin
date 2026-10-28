@@ -21,6 +21,16 @@ and where it streams, from lists you choose.
 Marquee talks to the launcher through the
 [ATV Launcher Wallpaper API](https://github.com/dstio/wallpaper-api).
 
+## Installing
+
+1. Install ATV Launcher from [Google Play](https://play.google.com/store/apps/details?id=ca.dstudio.atvlauncher.pro).
+2. Download `marquee-<version>.apk` from this repository's
+   [Releases](https://github.com/dstio/marquee-wallpaper-plugin/releases) and install it. Each
+   release lists the APK's SHA-256, so you can check the download.
+3. In ATV Launcher, open Settings > Wallpaper, choose Marquee under Plugins and turn it on.
+
+Marquee asks for nothing but internet access. What it sends where is in [PRIVACY.md](PRIVACY.md).
+
 ## Building
 
 You need JDK 17 or newer and the Android SDK (platform 36).
