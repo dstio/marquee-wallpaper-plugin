@@ -1,17 +1,14 @@
-# When a versioned release is published (the draft from release.yml, after a look), this copies its
-# APK to a rolling release tagged `latest`, under a fixed file name, so one address always serves the
-# newest build:
+# Rebuilds the rolling `latest` release by hand from a versioned release that is already out:
+# its APK under the fixed file name, at the fixed address
 #
 #   https://github.com/dstio/marquee-wallpaper-plugin/releases/download/latest/marquee-atvl-plugin.apk
 #
-# The `latest` release and tag are recreated at the released commit each time. It is never marked
-# as GitHub's "Latest": the versioned release keeps that. Run it by hand with a tag to (re)build the
-# rolling release from a release that is already out.
+# release.yml does the same on every tag; this is for repairs and for releases made another way. The
+# `latest` release and tag are recreated at the released commit. It is never marked as GitHub's
+# "Latest": the versioned release keeps that.
 name: Latest
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       tag:
@@ -32,7 +29,7 @@ jobs:
       contents: write
     env:
       GH_TOKEN: ${{ github.token }}
-      TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs.tag }}
+      TAG: ${{ inputs.tag }}
     steps:
       - name: Check the release
         run: |

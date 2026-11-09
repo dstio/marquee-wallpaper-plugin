@@ -1,7 +1,12 @@
-# A tag v<version> builds the signed APK and puts it, with its SHA-256, on a draft GitHub Release.
+# A tag v<version> builds the signed APK and publishes it, with its SHA-256, as a GitHub Release,
+# then copies it to the rolling `latest` release under a fixed file name, so one address always
+# serves the newest build:
+#
+#   https://github.com/dstio/marquee-wallpaper-plugin/releases/download/latest/marquee-atvl-plugin.apk
+#
 # The job runs in the `release` environment, which holds the signing key and the TMDB key and waits
-# for a maintainer's approval. The draft is published by hand after a look; publishing it runs
-# latest.yml, which copies the APK to the rolling `latest` release under a fixed file name.
+# for a maintainer's approval: that approval is the look before the release goes out. latest.yml
+# rebuilds the rolling release by hand from a release that is already out.
 name: Release
 
 on:
@@ -68,14 +73,35 @@ jobs:
           sha256sum "marquee-atvl-plugin-$VERSION.apk" > "marquee-atvl-plugin-$VERSION.apk.sha256"
           cat "marquee-atvl-plugin-$VERSION.apk.sha256"
 
-      - name: Draft the release
+      - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           sum=$(cut -d' ' -f1 "marquee-atvl-plugin-$VERSION.apk.sha256")
           gh release create "$GITHUB_REF_NAME" "marquee-atvl-plugin-$VERSION.apk" "marquee-atvl-plugin-$VERSION.apk.sha256" \
-            --draft --title "Marquee $VERSION" \
+            --verify-tag --latest --title "Marquee $VERSION" \
             --notes "Needs ATV Launcher. Install the APK, then in ATV Launcher open Settings > Wallpaper and choose Marquee under Plugins.
 
+          Always the newest build, under one file name: https://github.com/$GITHUB_REPOSITORY/releases/download/latest/marquee-atvl-plugin.apk
+
           SHA-256 of marquee-atvl-plugin-$VERSION.apk: \`$sum\`"
+
+      - name: Update the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir out
+          cp "marquee-atvl-plugin-$VERSION.apk" out/marquee-atvl-plugin.apk
+          (cd out && sha256sum marquee-atvl-plugin.apk > marquee-atvl-plugin.apk.sha256)
+          sum=$(cut -d' ' -f1 out/marquee-atvl-plugin.apk.sha256)
+          gh release delete latest --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes || true
+          gh release create latest out/marquee-atvl-plugin.apk out/marquee-atvl-plugin.apk.sha256 \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --latest=false \
+            --title "Marquee, newest build" \
+            --notes "Always the newest release, under one file name. Today that is [Marquee $VERSION](https://github.com/$GITHUB_REPOSITORY/releases/tag/$GITHUB_REF_NAME).
+
+          Fixed address: https://github.com/$GITHUB_REPOSITORY/releases/download/latest/marquee-atvl-plugin.apk
+
+          SHA-256 of marquee-atvl-plugin.apk: \`$sum\`"
