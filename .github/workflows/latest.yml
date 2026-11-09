@@ -54,7 +54,13 @@ jobs:
           mkdir in
           gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir in \
             --pattern "marquee-atvl-plugin-$VERSION.apk" --pattern "marquee-atvl-plugin-$VERSION.apk.sha256"
-          (cd in && sha256sum -c "marquee-atvl-plugin-$VERSION.apk.sha256")
+          # compare the sums, not the file names: an older release's .sha256 may name the APK differently
+          expected=$(cut -d' ' -f1 "in/marquee-atvl-plugin-$VERSION.apk.sha256")
+          actual=$(sha256sum "in/marquee-atvl-plugin-$VERSION.apk" | cut -d' ' -f1)
+          if [ "$expected" != "$actual" ]; then
+            echo "SHA-256 mismatch: the release says $expected, the file is $actual" >&2
+            exit 1
+          fi
           mkdir out
           cp "in/marquee-atvl-plugin-$VERSION.apk" out/marquee-atvl-plugin.apk
           (cd out && sha256sum marquee-atvl-plugin.apk > marquee-atvl-plugin.apk.sha256 && cat marquee-atvl-plugin.apk.sha256)
