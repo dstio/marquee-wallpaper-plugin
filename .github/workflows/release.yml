@@ -1,6 +1,7 @@
 # A tag v<version> builds the signed APK and puts it, with its SHA-256, on a draft GitHub Release.
 # The job runs in the `release` environment, which holds the signing key and the TMDB key and waits
-# for a maintainer's approval. The draft is published by hand after a look.
+# for a maintainer's approval. The draft is published by hand after a look; publishing it runs
+# latest.yml, which copies the APK to the rolling `latest` release under a fixed file name.
 name: Release
 
 on:

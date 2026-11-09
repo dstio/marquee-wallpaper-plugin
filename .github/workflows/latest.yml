@@ -1,0 +1,75 @@
+# When a versioned release is published (the draft from release.yml, after a look), this copies its
+# APK to a rolling release tagged `latest`, under a fixed file name, so one address always serves the
+# newest build:
+#
+#   https://github.com/dstio/marquee-wallpaper-plugin/releases/download/latest/marquee-atvl-plugin.apk
+#
+# The `latest` release and tag are recreated at the released commit each time. It is never marked
+# as GitHub's "Latest": the versioned release keeps that. Run it by hand with a tag to (re)build the
+# rolling release from a release that is already out.
+name: Latest
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: The versioned release to copy, for example v0.1.0
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: latest-release
+  cancel-in-progress: false
+
+jobs:
+  latest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs.tag }}
+    steps:
+      - name: Check the release
+        run: |
+          set -euo pipefail
+          case "$TAG" in
+            v[0-9]*) ;;
+            *) echo "Not a versioned release: $TAG" >&2; exit 1 ;;
+          esac
+          state=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease --jq '[.isDraft,.isPrerelease] | map(tostring) | join(" ")')
+          if [ "$state" != "false false" ]; then
+            echo "$TAG is a draft or a prerelease; the rolling release follows published releases only" >&2
+            exit 1
+          fi
+          echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
+
+      - name: Download the release APK and check its sum
+        run: |
+          set -euo pipefail
+          mkdir in
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir in \
+            --pattern "marquee-atvl-plugin-$VERSION.apk" --pattern "marquee-atvl-plugin-$VERSION.apk.sha256"
+          (cd in && sha256sum -c "marquee-atvl-plugin-$VERSION.apk.sha256")
+          mkdir out
+          cp "in/marquee-atvl-plugin-$VERSION.apk" out/marquee-atvl-plugin.apk
+          (cd out && sha256sum marquee-atvl-plugin.apk > marquee-atvl-plugin.apk.sha256 && cat marquee-atvl-plugin.apk.sha256)
+
+      - name: Recreate the latest release at the released commit
+        run: |
+          set -euo pipefail
+          sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$TAG" --jq .sha)
+          sum=$(cut -d' ' -f1 out/marquee-atvl-plugin.apk.sha256)
+          gh release delete latest --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes || true
+          gh release create latest out/marquee-atvl-plugin.apk out/marquee-atvl-plugin.apk.sha256 \
+            --repo "$GITHUB_REPOSITORY" --target "$sha" --latest=false \
+            --title "Marquee, newest build" \
+            --notes "Always the newest release, under one file name. Today that is [Marquee $VERSION](https://github.com/$GITHUB_REPOSITORY/releases/tag/$TAG).
+
+          Fixed address: https://github.com/$GITHUB_REPOSITORY/releases/download/latest/marquee-atvl-plugin.apk
+
+          SHA-256 of marquee-atvl-plugin.apk: \`$sum\`"
